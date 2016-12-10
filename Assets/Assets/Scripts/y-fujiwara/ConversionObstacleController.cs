@@ -28,6 +28,7 @@ public class ConversionObstacleController : MonoBehaviour
 
         var targetObject = targetObjects[0];
         var targetPosition = targetObject.transform.position;
+        targetPosition.y = 0;
 
         // タグよりの取得が配列なので,一応全部削除
         foreach(var deleteObject in targetObjects) 
@@ -36,7 +37,7 @@ public class ConversionObstacleController : MonoBehaviour
         }
 
         // 設定されたメンバ変数のオブジェクトを削除対象のオブジェクト位置に生成
-        Instantiate(Resources.Load("Prefabs/NonObstacle"), targetPosition, Quaternion.identity);
+        GameObject testObject = Instantiate(Resources.Load("Prefabs/slope_01"), targetPosition, Quaternion.identity) as GameObject;
     }
 
     /// <summary>
