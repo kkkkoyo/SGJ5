@@ -6,12 +6,7 @@ using UnityEngine;
 /// y-fujiwara
 /// テスト用ボタンイベント用クラス
 /// </summary>
-public class ConversionObstacle : MonoBehaviour {
-
-    /// <summary>
-    /// 新しく生成する障害なしオブジェクト
-    /// </summary>
-    public GameObject nonObstacleObject;
+public class ConversionObstacleController : MonoBehaviour {
 
     /// <summary>
     /// ボタンクリック用イベント
@@ -20,6 +15,10 @@ public class ConversionObstacle : MonoBehaviour {
     public void OnConversionClick() {
         // 対象オブジェクトとポジション取得
         var targetObjects = GameObject.FindGameObjectsWithTag("Obstacle");
+
+        // 対象タグのオブジェクトすべてが消されていたらメソッドを抜ける
+        if (targetObjects.Length == 0) return;
+
         var targetObject = targetObjects[0];
         var targetPosition = targetObject.transform.position;
 
