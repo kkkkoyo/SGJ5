@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 /// <summary>
 /// y-fujiwara
 /// テスト用ボタンイベント用クラス
@@ -13,6 +13,14 @@ public class ConversionObstacleController : MonoBehaviour
     /// メニューのスライドイン用メンバ変数
     /// </summary>
     [SerializeField]private PanelSlider slider;
+    [SerializeField]private Transform returnGameButton;
+
+    void Start(){
+        //TODO:ゴリ押し
+        returnGameButton.position=new Vector3(returnGameButton.position.x,returnGameButton.position.y+400,0);
+
+    }
+
 
     /// <summary>
     /// ボタンクリック用イベント
@@ -35,9 +43,12 @@ public class ConversionObstacleController : MonoBehaviour
         {
             Destroy(deleteObject);
         }
+        Vector3 SlopePosition=targetPosition;
+        //埋まるのを回避
+        SlopePosition.y+=0.111f;
 
         // 設定されたメンバ変数のオブジェクトを削除対象のオブジェクト位置に生成
-        GameObject testObject = Instantiate(Resources.Load("Prefabs/slope_01"), targetPosition, Quaternion.identity) as GameObject;
+        GameObject testObject = Instantiate(Resources.Load("Prefabs/slope_01"), SlopePosition, Quaternion.identity) as GameObject;
     }
 
     /// <summary>
