@@ -47,6 +47,7 @@ public class ConversionObstacleController : MonoBehaviour
 
        // Listから削除する対象を把握するために普通のfor文を利用
         for (int i = 0; i < barrierObjects.Count(); i++ ) {
+            removeIndex = i;
             var x = barrierObjects[i];
             // 使おうとしている対象のアイテムが判定範囲に存在するバリアに対応しているかどうかチェック
             if (itemList.IndexOf(itemList[itemNumber]) == barrierList.IndexOf(x.BarrierTagName) ) { 
@@ -56,7 +57,6 @@ public class ConversionObstacleController : MonoBehaviour
                 // 一つでも存在すれば次の処理に移る
                 break;
             }
-            removeIndex = i;
         }
        Debug.Log(@"リストの長さ" + barrierObjects.Count() + "," + barrierObjects[removeIndex].BarrierTagName  + "," + removeIndex);
 
