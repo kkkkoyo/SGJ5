@@ -35,11 +35,11 @@ public class PetilItemChecker : MonoBehaviour {
 
 		// 障害物との判定処理	
 		if (this.barrierList.Contains(collider.gameObject.tag)) { 
-			if (!this.collisionBarrierObjects.Exists(x => x.BarrierTagName.Equals(tagName))) {
-				// すでに含まれていたらAddしない
-				this.collisionBarrierObjects.Add( new BarrierParameters(collider.gameObject)); 
-			}
+			barrierObject=collider.gameObject;
+			destroyBarrierName=collider.gameObject.tag;
+			barrierPosition=collider.gameObject.GetComponent<Transform>().position;
 		}
+
 		// パーツとの判定処理
 		if (this.partsList.Contains(collider.gameObject.tag)) {
 			this.ItemTotal += 1;
@@ -90,9 +90,7 @@ public class PetilItemChecker : MonoBehaviour {
     /// <param name="collider"></param>
 	void OnTriggerExit(Collider collider){
 		if (this.barrierList.Contains(collider.gameObject.tag)) {
-			this.collisionBarrierObjects.RemoveAll(x => x.BarrierTagName.Equals(collider.gameObject.tag));
 			barrierFlag=false; 
-			this.collisionBarrierObjects.ForEach(x => Debug.Log("残りタグ名" +x.BarrierTagName));
 		}
 		Debug.Log("" + this.barrierFlag);
 	}
