@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using GoPetilGo.BarrierObject;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; 
 
 public class PetilItemChecker : MonoBehaviour {
 
@@ -31,9 +32,13 @@ public class PetilItemChecker : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider){
 		string tagName = collider.gameObject.tag;
+
 		// 障害物との判定処理	
-		if (this.barrierList.Contains(collider.gameObject.tag)) {
-			this.collisionBarrierObjects.Add( new BarrierParameters(collider.gameObject)); 
+		if (this.barrierList.Contains(collider.gameObject.tag)) { 
+			if (!this.collisionBarrierObjects.Exists(x => x.BarrierTagName.Equals(tagName))) {
+				// すでに含まれていたらAddしない
+				this.collisionBarrierObjects.Add( new BarrierParameters(collider.gameObject)); 
+			}
 		}
 		// パーツとの判定処理
 		if (this.partsList.Contains(collider.gameObject.tag)) {
@@ -67,7 +72,9 @@ public class PetilItemChecker : MonoBehaviour {
 
 		if (this.shipTagName.Equals(c.gameObject.tag)) {	
 			if(this.ItemTotal>=3){
-				Debug.Log("クリア!");
+
+		SceneManager.LoadScene ("game_Sato");
+
 			}
 			return;
 		}
@@ -83,7 +90,9 @@ public class PetilItemChecker : MonoBehaviour {
     /// <param name="collider"></param>
 	void OnTriggerExit(Collider collider){
 		if (this.barrierList.Contains(collider.gameObject.tag)) {
-			barrierFlag=false;
+			this.collisionBarrierObjects.RemoveAll(x => x.BarrierTagName.Equals(collider.gameObject.tag));
+			barrierFlag=false; 
+			this.collisionBarrierObjects.ForEach(x => Debug.Log("残りタグ名" +x.BarrierTagName));
 		}
 		Debug.Log("" + this.barrierFlag);
 	}
