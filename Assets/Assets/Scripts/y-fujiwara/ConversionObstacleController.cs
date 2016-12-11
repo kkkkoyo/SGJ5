@@ -51,9 +51,13 @@ public class ConversionObstacleController : MonoBehaviour
         }else{
             barrierPosition.y=0.5f;
         }
-
+        Vector3 barrierRotate=new Vector3(0,itemChecker.PetilPos(),0);
+        
+        if(itemNumber==0){
+            barrierRotate.y=-90+barrierRotate.y;
+        }
         // 設定されたメンバ変数のオブジェクトを削除対象のオブジェクト位置に生成
-        GameObject testObject = Instantiate(Resources.Load("Prefabs/"+itemList[itemNumber]),barrierPosition, Quaternion.Euler(new Vector3(0,-90,0))) as GameObject;
+        GameObject testObject = Instantiate(Resources.Load("Prefabs/"+itemList[itemNumber]),barrierPosition, Quaternion.Euler(barrierRotate)) as GameObject;
     }
 
     /// <summary>

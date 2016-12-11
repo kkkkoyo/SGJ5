@@ -48,4 +48,8 @@ public class PetilItemChecker : MonoBehaviour {
 	public Vector3 barrierPos(){
 		return barrierPosition;
 	}
+	public float PetilPos(){
+		//:TODO
+		return this.transform.rotation.y;
+	}
 }
