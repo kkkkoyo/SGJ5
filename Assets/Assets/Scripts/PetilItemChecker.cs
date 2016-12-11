@@ -73,7 +73,7 @@ public class PetilItemChecker : MonoBehaviour {
 		if (this.shipTagName.Equals(c.gameObject.tag)) {	
 			if(this.ItemTotal>=3){
 
-		SceneManager.LoadScene ("Title");
+		SceneManager.LoadScene ("game_Sato");
 
 			}
 			return;
