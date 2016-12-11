@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using GoPetilGo.BarrierObject;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement; 
 
 public class PetilItemChecker : MonoBehaviour {
 
@@ -71,7 +72,9 @@ public class PetilItemChecker : MonoBehaviour {
 
 		if (this.shipTagName.Equals(c.gameObject.tag)) {	
 			if(this.ItemTotal>=3){
-				Debug.Log("クリア!");
+
+		SceneManager.LoadScene ("Title");
+
 			}
 			return;
 		}
