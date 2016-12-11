@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using Item.Data;
+using GoPetilGo.BarrierObject;
+using System.Linq;
 /// <summary>
 /// y-fujiwara
 /// テスト用ボタンイベント用クラス
@@ -9,10 +12,26 @@ using UnityEngine;
 public class ConversionObstacleController : MonoBehaviour 
 {
 
+    # region ■privateメンバ変数■
+    private List<string> barrierList = new List<string>(){"dansa","barrierA","barrierB","barrierC","barrierD"};
+    private List<string> itemList = new List<string>(){"slope","itemA","itemB","itemC","itemD"};
+    private int itemNumber=0;
+    #endregion
+
+    #region ■SerializeFieldメンバ変数■
     /// <summary>
     /// メニューのスライドイン用メンバ変数
     /// </summary>
     [SerializeField]private PanelSlider slider;
+    [SerializeField]private Transform returnGameButton;
+    [SerializeField]private Image ConversionObjectImage;
+    [SerializeField]private PetilItemChecker itemChecker;
+    #endregion
+
+    void Start(){
+        //TODO:ゴリ押し
+        returnGameButton.position=new Vector3(returnGameButton.position.x,returnGameButton.position.y+400,0);
+    }
 
     /// <summary>
     /// ボタンクリック用イベント
@@ -20,24 +39,54 @@ public class ConversionObstacleController : MonoBehaviour
     /// </summary>
     public void OnConversionClick() 
     {
-        // 対象オブジェクトとポジション取得
-        var targetObjects = GameObject.FindGameObjectsWithTag("Obstacle");
+       List<BarrierParameters> barrierObjects = itemChecker.destroyObjects();
+       GameObject targetObject = null;
+       BarrierParameters targetParams = null;
+       bool returnFlag = false;
+       int removeIndex = -1;
 
-        // 対象タグのオブジェクトすべてが消されていたらメソッドを抜ける
-        if (targetObjects.Length == 0) return;
+        barrierObjects.ForEach (x => {
+            // 使おうとしている対象のアイテムが判定範囲に存在するバリアに対応しているかどうかチェック
+            if (itemList.IndexOf(itemList[itemNumber]) == barrierList.IndexOf(x.BarrierTagName) ) { 
+                // ここが大丈夫か要確認
+                // 一つでも存在すれば次の処理に移る
+                returnFlag = true;
+                targetObject = x.BarrierObject;
+                targetParams = new BarrierParameters(targetObject); 
+                removeIndex += 1;
+            }
+        });
 
-        var targetObject = targetObjects[0];
-        var targetPosition = targetObject.transform.position;
-        targetPosition.y = 0;
-
-        // タグよりの取得が配列なので,一応全部削除
-        foreach(var deleteObject in targetObjects) 
-        {
-            Destroy(deleteObject);
+        // アイテムに対応するバリアが判定内に一つもない場合は終了
+        // nullチェックも行っている
+        if (!returnFlag || targetParams == null || targetObject == null) {
+            Debug.Log(@"削除対象なし");
+            return;
         }
 
-        // 設定されたメンバ変数のオブジェクトを削除対象のオブジェクト位置に生成
-        GameObject testObject = Instantiate(Resources.Load("Prefabs/slope_01"), targetPosition, Quaternion.identity) as GameObject;
+        // 対象オブジェクトとポジション取得
+        if(itemChecker.getBarrierFlag()){
+            if(itemList.IndexOf(itemList[itemNumber]) == barrierList.IndexOf(targetParams.BarrierTagName)){
+                itemChecker.destroyObject(targetObject); 
+                // Listから削除 
+                itemChecker.removeListElements(removeIndex);
+            }
+        }
+        Vector3 barrierPosition= targetParams.BarrierPosition;
+        //埋まるのを回避
+        if(itemNumber==0) { 
+            barrierPosition.y=0.111f; 
+        }
+        else {
+            barrierPosition.y=0.5f;
+        }
+        Vector3 barrierRotate=new Vector3(0,itemChecker.PetilPos(),0);
+        
+        if(itemNumber==0){
+            barrierRotate.y=-90+barrierRotate.y;
+        }
+        // 障害がないオブジェクトを削除対象のオブジェクト位置に生成
+        GameObject testObject = Instantiate(Resources.Load("Prefabs/"+itemList[itemNumber]),barrierPosition, Quaternion.Euler(barrierRotate)) as GameObject;
     }
 
     /// <summary>
@@ -54,5 +103,36 @@ public class ConversionObstacleController : MonoBehaviour
     public void OnCloseMenuClick()
     {
         this.slider.SlideOut();
+    }
+
+    /// <summary>
+    /// アイテム右ボタン
+    /// </summary> 
+    public void OnMenuLeftClick()
+    { 
+        itemNumber  = itemNumber <= 0 ? itemList.Count-1 : itemNumber-1 ;
+        Texture2D texture = Resources.Load("images/"+itemList[itemNumber]) as Texture2D;
+        Image img = GameObject.Find("ButtonCanvas/ConversionObjectButton").GetComponent<Image>();
+        img.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+    }
+
+    /// <summary>
+    /// アイテム左ボタン
+    /// </summary> 
+    public void OnMenuRightClick()
+    {
+        //TODO:
+        itemNumber  = itemNumber >= itemList.Count-1 ? 0 : itemNumber+1 ;
+        Texture2D texture = Resources.Load("images/"+itemList[itemNumber]) as Texture2D;
+        Image img = GameObject.Find("ButtonCanvas/ConversionObjectButton").GetComponent<Image>();
+        img.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+    }
+
+    /// <summary>
+    /// 宇宙船のPartsを取得するコールバック関数
+    /// </summary>
+    public void PartsGetCallBack()
+    {
+
     }
 }
