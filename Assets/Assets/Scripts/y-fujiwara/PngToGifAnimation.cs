@@ -60,6 +60,11 @@ public class PngToGifAnimation : MonoBehaviour {
 	/// 毎フレームごとに呼ばれるため,本メソッドでアニメーション処理を行う
     /// </summary>
     private void Update () {
+        if (firstFrameNum == this.imageLength) {
+            this.FInishAnimation();
+            return ;
+        }
+
         dTime += Time.deltaTime;
         if (changeFrameSecond < dTime) {
             dTime = 0.0f;
@@ -73,7 +78,7 @@ public class PngToGifAnimation : MonoBehaviour {
 	/// <summary>
     /// 終了処理
     /// </summary>
-	private void FInishScene() {
+	private void FInishAnimation() {
 		SceneManager.LoadScene ("game");
 	}
 }
