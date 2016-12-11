@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+using GoPetilGo.BarrierObject;
 using UnityEngine.UI;
 
 public class PetilItemChecker : MonoBehaviour {
@@ -10,20 +12,28 @@ public class PetilItemChecker : MonoBehaviour {
     private List<string> itemList = new List<string>(){"slope","itemA","itemB","itemC","itemD"};
     private readonly List<string> partsList = new List<string>(){"KeyitemA","KeyitemB","KeyitemC"};
 	private readonly string shipTagName = "ship";
+
+	
 	private GameObject barrierObject;
 	private string destroyBarrierName="0";
 	private Vector3 barrierPosition=new Vector3();
 	[SerializeField] private Text messageText;
 
+	/// <summary>
+    /// 取得したアイテム数
+    /// </summary>
 	private int ItemTotal;
+
+	/// <summary>
+    /// 当たり判定にあるゲームオブジェクトリスト
+    /// </summary>
+	private List<BarrierParameters> collisionBarrierObjects = new List<BarrierParameters>();
 
 	void OnTriggerEnter(Collider collider){
 		string tagName = collider.gameObject.tag;
 		// 障害物との判定処理	
 		if (this.barrierList.Contains(collider.gameObject.tag)) {
-			barrierObject=collider.gameObject;
-			destroyBarrierName=collider.gameObject.tag;
-			barrierPosition=collider.gameObject.GetComponent<Transform>().position;
+			this.collisionBarrierObjects.Add( new BarrierParameters(collider.gameObject)); 
 		}
 		// パーツとの判定処理
 		if (this.partsList.Contains(collider.gameObject.tag)) {
@@ -44,8 +54,13 @@ public class PetilItemChecker : MonoBehaviour {
 			return;
 		}
 		// 宇宙船との当たり判定スケルトン
+		if (this.shipTagName.Equals(collider.gameObject.tag)) {
+			
+			Debug.Log("クリア!");
+			return;
+		}
+		Debug.Log("" + this.barrierFlag);
 		barrierFlag=true;
-
 
 	}
 	void OnCollisionEnter(Collision c) {
@@ -80,9 +95,32 @@ public class PetilItemChecker : MonoBehaviour {
 		Destroy(barrierObject);
 	}
 
+	/// <summary>
+    /// オーバーロード
+	/// 引数に与えられたオブジェクトを破棄
+    /// </summary>
+    /// <param name="destroyObject"></param>
+	public void destroyObject(GameObject destroyObject) {
+		Destroy(destroyObject);
+	}
+
+	public void removeListElements(int index) {
+		Debug.Log(index);
+		this.collisionBarrierObjects.RemoveAt(index);
+	}
+
 	public string destroyName(){
 		return destroyBarrierName;
 	}
+	
+	/// <summary>
+	/// 削除予定のオブジェクト取得
+    /// </summary>
+    /// <returns></returns>
+	public List<BarrierParameters> destroyObjects(){
+		return this.collisionBarrierObjects;
+	}
+
 	public GameObject barrierItem(){
 		return barrierObject;
 	}
