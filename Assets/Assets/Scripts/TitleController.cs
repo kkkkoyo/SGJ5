@@ -14,4 +14,7 @@ public class TitleController : MonoBehaviour {
 	public void OnClicedTitleStart(){
 		SceneManager.LoadScene ("StartAnimation");
 	}
+	public void OnClicedTitleBACK(){
+		SceneManager.LoadScene ("Title");
+	}
 }
