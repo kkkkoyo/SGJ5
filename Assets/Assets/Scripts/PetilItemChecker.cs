@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PetilItemChecker : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class PetilItemChecker : MonoBehaviour {
 	private GameObject barrierObject;
 	private string destroyBarrierName="0";
 	private Vector3 barrierPosition=new Vector3();
+	[SerializeField] private Text messageText;
 
 	private int ItemTotal;
 
@@ -26,17 +28,30 @@ public class PetilItemChecker : MonoBehaviour {
 		// パーツとの判定処理
 		if (this.partsList.Contains(collider.gameObject.tag)) {
 			this.ItemTotal += 1;
+
+			Texture2D texture = Resources.Load("images/"+this.ItemTotal) as Texture2D;
+			Image img = GameObject.Find("ButtonCanvas/Score/Score_1").GetComponent<Image>();
+			img.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+
+
 			Destroy(collider.gameObject);
 			Debug.Log("" + this.ItemTotal);
 			// バリアのフラグを変更はしない
+			if(this.ItemTotal>=3){
+			//3つ揃った
+			messageText.GetComponent<Text>().text="宇宙船へ迎え！";
+		 }
 			return;
 		}
 		// 宇宙船との当たり判定スケルトン
 		if (this.shipTagName.Equals(collider.gameObject.tag)) {
+			
+			Debug.Log("クリア!");
 			return;
 		}
 		barrierFlag=true;
-		Debug.Log("" + this.barrierFlag);
+
+
 	}
 
 	void OnTriggerStay(Collider collider){
