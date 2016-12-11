@@ -43,19 +43,22 @@ public class ConversionObstacleController : MonoBehaviour
        GameObject targetObject = null;
        BarrierParameters targetParams = null;
        bool returnFlag = false;
-       int removeIndex = -1;
+       int removeIndex = 0;
 
-        barrierObjects.ForEach (x => {
+       // Listから削除する対象を把握するために普通のfor文を利用
+        for (int i = 0; i < barrierObjects.Count(); i++ ) {
+            var x = barrierObjects[i];
             // 使おうとしている対象のアイテムが判定範囲に存在するバリアに対応しているかどうかチェック
             if (itemList.IndexOf(itemList[itemNumber]) == barrierList.IndexOf(x.BarrierTagName) ) { 
-                // ここが大丈夫か要確認
-                // 一つでも存在すれば次の処理に移る
                 returnFlag = true;
                 targetObject = x.BarrierObject;
                 targetParams = new BarrierParameters(targetObject); 
-                removeIndex += 1;
+                // 一つでも存在すれば次の処理に移る
+                break;
             }
-        });
+            removeIndex = i;
+        }
+       Debug.Log(@"リストの長さ" + barrierObjects.Count() + "," + barrierObjects[removeIndex].BarrierTagName  + "," + removeIndex);
 
         // アイテムに対応するバリアが判定内に一つもない場合は終了
         // nullチェックも行っている
