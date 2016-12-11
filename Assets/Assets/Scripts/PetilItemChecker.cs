@@ -44,14 +44,18 @@ public class PetilItemChecker : MonoBehaviour {
 			return;
 		}
 		// 宇宙船との当たり判定スケルトン
-		if (this.shipTagName.Equals(collider.gameObject.tag)) {
-			
-			Debug.Log("クリア!");
-			return;
-		}
 		barrierFlag=true;
 
 
+	}
+	void OnCollisionEnter(Collision c) {
+
+		if (this.shipTagName.Equals(c.gameObject.tag)) {	
+			if(this.ItemTotal>=3){
+				Debug.Log("クリア!");
+			}
+			return;
+		}
 	}
 
 	void OnTriggerStay(Collider collider){
