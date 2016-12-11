@@ -43,7 +43,7 @@ public class ConversionObstacleController : MonoBehaviour
        GameObject targetObject = null;
        BarrierParameters targetParams = null;
        bool returnFlag = false;
-       int removeIndex = 0;
+       int removeIndex = -1;
 
         barrierObjects.ForEach (x => {
             // 使おうとしている対象のアイテムが判定範囲に存在するバリアに対応しているかどうかチェック
@@ -52,9 +52,9 @@ public class ConversionObstacleController : MonoBehaviour
                 // 一つでも存在すれば次の処理に移る
                 returnFlag = true;
                 targetObject = x.BarrierObject;
-                targetParams = new BarrierParameters(targetObject);
+                targetParams = new BarrierParameters(targetObject); 
+                removeIndex += 1;
             }
-            removeIndex += 1;
         });
 
         // アイテムに対応するバリアが判定内に一つもない場合は終了
@@ -67,7 +67,9 @@ public class ConversionObstacleController : MonoBehaviour
         // 対象オブジェクトとポジション取得
         if(itemChecker.getBarrierFlag()){
             if(itemList.IndexOf(itemList[itemNumber]) == barrierList.IndexOf(targetParams.BarrierTagName)){
-                itemChecker.destroyObject(targetObject);
+                itemChecker.destroyObject(targetObject); 
+                // Listから削除 
+                itemChecker.removeListElements(removeIndex);
             }
         }
         Vector3 barrierPosition= targetParams.BarrierPosition;

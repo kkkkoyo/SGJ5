@@ -105,7 +105,8 @@ public class PetilItemChecker : MonoBehaviour {
 	}
 
 	public void removeListElements(int index) {
-		this.collisionBarrierObjects.Remove(index);
+		Debug.Log(index);
+		this.collisionBarrierObjects.RemoveAt(index);
 	}
 
 	public string destroyName(){
