@@ -14,10 +14,6 @@ public class ConversionObstacleController : MonoBehaviour
     private List<string> barrierList = new List<string>(){"dansa","barrierA","barrierB","barrierC","barrierD"};
     private List<string> itemList = new List<string>(){"slope","itemA","itemB","itemC","itemD"};
     private int itemNumber=0;
-
-    private string partsATag;
-    private string partsBTag;
-    private string partsCTag;
     #endregion
 
     #region ■SerializeFieldメンバ変数■
@@ -41,7 +37,7 @@ public class ConversionObstacleController : MonoBehaviour
     /// </summary>
     public void OnConversionClick() 
     {
-        if(itemList.IndexOf(itemList[itemNumber])!=barrierList.IndexOf(itemChecker.destroyName())){
+        if(itemList.IndexOf(itemList[itemNumber]) != barrierList.IndexOf(itemChecker.destroyName())) {
             return;
         }
         // 対象オブジェクトとポジション取得

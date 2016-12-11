@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GoPetilGo.ParrierObject;
 
 public class PetilItemChecker : MonoBehaviour {
 
@@ -9,19 +10,30 @@ public class PetilItemChecker : MonoBehaviour {
     private List<string> itemList = new List<string>(){"slope","itemA","itemB","itemC","itemD"};
     private readonly List<string> partsList = new List<string>(){"KeyitemA","KeyitemB","KeyitemC"};
 	private readonly string shipTagName = "ship";
+
+	/*
 	private GameObject barrierObject;
 	private string destroyBarrierName="0";
 	private Vector3 barrierPosition=new Vector3();
+	*/
 
+	/// <summary>
+    /// 取得したアイテム数
+    /// </summary>
 	private int ItemTotal;
+
+	/// <summary>
+    /// 当たり判定にあるゲームオブジェクトリスト
+    /// </summary>
+	private List<BarrierParameters> collisionBarrierObjects = new List<BarrierParameters>();
 
 	void OnTriggerEnter(Collider collider){
 		string tagName = collider.gameObject.tag;
 		// 障害物との判定処理	
 		if (this.barrierList.Contains(collider.gameObject.tag)) {
-			barrierObject=collider.gameObject;
-			destroyBarrierName=collider.gameObject.tag;
-			barrierPosition=collider.gameObject.GetComponent<Transform>().position;
+			this.collisionBarrierObjects.Add( new BarrierParameters(collider.gameObject)); 
+			// 障害物と接触した時だけフラグをtrueに
+			barrierFlag=true;
 		}
 		// パーツとの判定処理
 		if (this.partsList.Contains(collider.gameObject.tag)) {
@@ -35,7 +47,6 @@ public class PetilItemChecker : MonoBehaviour {
 		if (this.shipTagName.Equals(collider.gameObject.tag)) {
 			return;
 		}
-		barrierFlag=true;
 		Debug.Log("" + this.barrierFlag);
 	}
 
