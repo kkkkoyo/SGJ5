@@ -53,7 +53,7 @@ public class ConversionObstacleController : MonoBehaviour
         }
 
         // 設定されたメンバ変数のオブジェクトを削除対象のオブジェクト位置に生成
-        GameObject testObject = Instantiate(Resources.Load("Prefabs/"+itemList[itemNumber]),barrierPosition, Quaternion.identity) as GameObject;
+        GameObject testObject = Instantiate(Resources.Load("Prefabs/"+itemList[itemNumber]),barrierPosition, Quaternion.Euler(new Vector3(0,-90,0))) as GameObject;
     }
 
     /// <summary>
