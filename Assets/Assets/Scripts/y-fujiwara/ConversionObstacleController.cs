@@ -39,43 +39,19 @@ public class ConversionObstacleController : MonoBehaviour
     /// </summary>
     public void OnConversionClick() 
     {
-       List<BarrierParameters> barrierObjects = itemChecker.destroyObjects();
-       GameObject targetObject = null;
-       BarrierParameters targetParams = null;
-       bool returnFlag = false;
-       int removeIndex = 0;
-
-       // Listから削除する対象を把握するために普通のfor文を利用
-        for (int i = 0; i < barrierObjects.Count(); i++ ) {
-            removeIndex = i;
-            var x = barrierObjects[i];
-            // 使おうとしている対象のアイテムが判定範囲に存在するバリアに対応しているかどうかチェック
-            if (itemList.IndexOf(itemList[itemNumber]) == barrierList.IndexOf(x.BarrierTagName) ) { 
-                returnFlag = true;
-                targetObject = x.BarrierObject;
-                targetParams = new BarrierParameters(targetObject); 
-                // 一つでも存在すれば次の処理に移る
-                break;
-            }
-        }
-       // Debug.Log(@"リストの長さ" + barrierObjects.Count() + "," + barrierObjects[removeIndex].BarrierTagName  + "," + removeIndex);
-
-        // アイテムに対応するバリアが判定内に一つもない場合は終了
-        // nullチェックも行っている
-        if (!returnFlag || targetParams == null || targetObject == null) {
-            Debug.Log(@"削除対象なし");
+        if(itemList.IndexOf(itemList[itemNumber])!=barrierList.IndexOf(itemChecker.destroyName())){
             return;
         }
-
         // 対象オブジェクトとポジション取得
+         GameObject targetObject = itemChecker.barrierItem();
         if(itemChecker.getBarrierFlag()){
-            if(itemList.IndexOf(itemList[itemNumber]) == barrierList.IndexOf(targetParams.BarrierTagName)){
-                itemChecker.destroyObject(targetObject); 
-                // Listから削除 
-                itemChecker.removeListElements(removeIndex);
+
+            if(itemList.IndexOf(itemList[itemNumber])==barrierList.IndexOf(itemChecker.destroyName())){
+
+                itemChecker.destroyObject();
             }
         }
-        Vector3 barrierPosition= targetParams.BarrierPosition;
+        Vector3 barrierPosition=itemChecker.barrierPos();
         //埋まるのを回避
         if(itemNumber==0) { 
             barrierPosition.y=0.111f; 
