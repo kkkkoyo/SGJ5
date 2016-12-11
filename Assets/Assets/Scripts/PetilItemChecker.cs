@@ -63,6 +63,15 @@ public class PetilItemChecker : MonoBehaviour {
 		barrierFlag=true;
 
 	}
+	void OnCollisionEnter(Collision c) {
+
+		if (this.shipTagName.Equals(c.gameObject.tag)) {	
+			if(this.ItemTotal>=3){
+				Debug.Log("クリア!");
+			}
+			return;
+		}
+	}
 
 	void OnTriggerStay(Collider collider){
 	}
