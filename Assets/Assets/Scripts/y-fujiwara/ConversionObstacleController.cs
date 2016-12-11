@@ -48,6 +48,8 @@ public class ConversionObstacleController : MonoBehaviour
         //埋まるのを回避
         if(itemNumber==0){
         barrierPosition.y=0.111f;
+        }else{
+            barrierPosition.y=0.5f;
         }
 
         // 設定されたメンバ変数のオブジェクトを削除対象のオブジェクト位置に生成

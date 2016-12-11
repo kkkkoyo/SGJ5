@@ -11,7 +11,11 @@ public class PetilItemChecker : MonoBehaviour {
 	private string destroyBarrierName="0";
 	private Vector3 barrierPosition=new Vector3();
 	void OnTriggerEnter(Collider collider){
-		if (collider.gameObject.tag == "dansa") {
+		if (collider.gameObject.tag == "dansa"||
+			collider.gameObject.tag == "barrierA"||
+			collider.gameObject.tag == "barrierB"||
+			collider.gameObject.tag == "barrierC"||
+			collider.gameObject.tag == "barrierD") {
 			barrierObject=collider.gameObject;
 			destroyBarrierName=collider.gameObject.tag;
 			barrierPosition=collider.gameObject.GetComponent<Transform>().position;
