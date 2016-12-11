@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GoPetilGo.ParrierObject;
+using System.Linq;
+using GoPetilGo.BarrierObject;
 
 public class PetilItemChecker : MonoBehaviour {
 
@@ -11,11 +12,10 @@ public class PetilItemChecker : MonoBehaviour {
     private readonly List<string> partsList = new List<string>(){"KeyitemA","KeyitemB","KeyitemC"};
 	private readonly string shipTagName = "ship";
 
-	/*
+	
 	private GameObject barrierObject;
 	private string destroyBarrierName="0";
 	private Vector3 barrierPosition=new Vector3();
-	*/
 
 	/// <summary>
     /// 取得したアイテム数
@@ -72,9 +72,31 @@ public class PetilItemChecker : MonoBehaviour {
 		Destroy(barrierObject);
 	}
 
+	/// <summary>
+    /// オーバーロード
+	/// 引数に与えられたオブジェクトを破棄
+    /// </summary>
+    /// <param name="destroyObject"></param>
+	public void destroyObject(GameObject destroyObject) {
+		Destroy(destroyObject);
+	}
+
+	public void removeListElements(int index) {
+		this.collisionBarrierObjects.Remove(index);
+	}
+
 	public string destroyName(){
 		return destroyBarrierName;
 	}
+	
+	/// <summary>
+	/// 削除予定のオブジェクト取得
+    /// </summary>
+    /// <returns></returns>
+	public List<BarrierParameters> destroyObjects(){
+		return this.collisionBarrierObjects;
+	}
+
 	public GameObject barrierItem(){
 		return barrierObject;
 	}

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Item.Data;
+using GoPetilGo.BarrierObject;
+using System.Linq;
 /// <summary>
 /// y-fujiwara
 /// テスト用ボタンイベント用クラス
@@ -37,19 +39,38 @@ public class ConversionObstacleController : MonoBehaviour
     /// </summary>
     public void OnConversionClick() 
     {
-        if(itemList.IndexOf(itemList[itemNumber]) != barrierList.IndexOf(itemChecker.destroyName())) {
+       List<BarrierParameters> barrierObjects = itemChecker.destroyObjects();
+       GameObject targetObject = null;
+       BarrierParameters targetParams = null;
+       bool returnFlag = false;
+       int removeIndex = 0;
+
+        barrierObjects.ForEach (x => {
+            // 使おうとしている対象のアイテムが判定範囲に存在するバリアに対応しているかどうかチェック
+            if (itemList.IndexOf(itemList[itemNumber]) == barrierList.IndexOf(x.BarrierTagName) ) { 
+                // ここが大丈夫か要確認
+                // 一つでも存在すれば次の処理に移る
+                returnFlag = true;
+                targetObject = x.BarrierObject;
+                targetParams = new BarrierParameters(targetObject);
+            }
+            removeIndex += 1;
+        });
+
+        // アイテムに対応するバリアが判定内に一つもない場合は終了
+        // nullチェックも行っている
+        if (!returnFlag || targetParams == null || targetObject == null) {
+            Debug.Log(@"削除対象なし");
             return;
         }
+
         // 対象オブジェクトとポジション取得
-         GameObject targetObject = itemChecker.barrierItem();
         if(itemChecker.getBarrierFlag()){
-
-            if(itemList.IndexOf(itemList[itemNumber])==barrierList.IndexOf(itemChecker.destroyName())){
-
-                itemChecker.destroyObject();
+            if(itemList.IndexOf(itemList[itemNumber]) == barrierList.IndexOf(targetParams.BarrierTagName)){
+                itemChecker.destroyObject(targetObject);
             }
         }
-        Vector3 barrierPosition=itemChecker.barrierPos();
+        Vector3 barrierPosition= targetParams.BarrierPosition;
         //埋まるのを回避
         if(itemNumber==0) { 
             barrierPosition.y=0.111f; 

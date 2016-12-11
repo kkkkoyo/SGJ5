@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GoPetilGo.ParrierObject { 
+namespace GoPetilGo.BarrierObject { 
 	/// <summary>
     /// y-fujiwara
     /// バリアを判別するのに必要なParameterを保持するクラス
