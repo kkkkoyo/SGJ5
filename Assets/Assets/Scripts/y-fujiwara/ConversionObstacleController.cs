@@ -58,7 +58,7 @@ public class ConversionObstacleController : MonoBehaviour
                 break;
             }
         }
-       Debug.Log(@"リストの長さ" + barrierObjects.Count() + "," + barrierObjects[removeIndex].BarrierTagName  + "," + removeIndex);
+       // Debug.Log(@"リストの長さ" + barrierObjects.Count() + "," + barrierObjects[removeIndex].BarrierTagName  + "," + removeIndex);
 
         // アイテムに対応するバリアが判定内に一つもない場合は終了
         // nullチェックも行っている
