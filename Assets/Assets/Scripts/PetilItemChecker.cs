@@ -19,10 +19,16 @@ public class PetilItemChecker : MonoBehaviour {
 	private string destroyBarrierName="0";
 	private Vector3 barrierPosition=new Vector3();
 	[SerializeField] private Text messageText;
+	private Vector3 initPos=Vector3.zero;
 
 	/// <summary>
     /// 取得したアイテム数
     /// </summary>
+	void Start(){
+		 initPos = transform.position;
+	}
+
+
 	private int ItemTotal;
 
 	/// <summary>
@@ -32,7 +38,6 @@ public class PetilItemChecker : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider){
 		string tagName = collider.gameObject.tag;
-
 		// 障害物との判定処理	
 		if (this.barrierList.Contains(collider.gameObject.tag)) { 
 			barrierObject=collider.gameObject;
@@ -98,8 +103,11 @@ public class PetilItemChecker : MonoBehaviour {
 	public bool getBarrierFlag(){
 		return barrierFlag;
 	}
-	public void destroyObject(){
+	public Vector3 destroyObject(){
+		Vector3 aaa;
+		aaa=barrierObject.transform.rotation.eulerAngles;
 		Destroy(barrierObject);
+		return aaa;
 	}
 
 	/// <summary>
@@ -137,5 +145,11 @@ public class PetilItemChecker : MonoBehaviour {
 	public float PetilPos(){
 		//:TODO
 		return this.transform.rotation.y;
+	}
+	public void InitPos(){
+		transform.position = initPos;
+	}
+	public void Restart(){
+	SceneManager.LoadScene ("game");
 	}
 }
