@@ -30,7 +30,7 @@ public class ConversionObstacleController : MonoBehaviour
 
     void Start(){
         //TODO:ゴリ押し
-        returnGameButton.position=new Vector3(returnGameButton.position.x,returnGameButton.position.y+400,0);
+        //returnGameButton.position=new Vector3(returnGameButton.position.x,returnGameButton.position.y+400,0);
     }
 
     /// <summary>
@@ -39,7 +39,11 @@ public class ConversionObstacleController : MonoBehaviour
     /// </summary>
     public void OnConversionClick() 
     {
+        Vector3 rotate=Vector3.zero;
         if(itemList.IndexOf(itemList[itemNumber])!=barrierList.IndexOf(itemChecker.destroyName())){
+            Debug.Log(itemList.IndexOf(itemList[itemNumber]));
+            Debug.Log(barrierList.IndexOf(itemChecker.destroyName()));
+
             return;
         }
         // 対象オブジェクトとポジション取得
@@ -48,7 +52,7 @@ public class ConversionObstacleController : MonoBehaviour
 
             if(itemList.IndexOf(itemList[itemNumber])==barrierList.IndexOf(itemChecker.destroyName())){
 
-                itemChecker.destroyObject();
+               rotate =itemChecker.destroyObject();
             }
         }
         Vector3 barrierPosition=itemChecker.barrierPos();
@@ -62,10 +66,22 @@ public class ConversionObstacleController : MonoBehaviour
         Vector3 barrierRotate=new Vector3(0,itemChecker.PetilPos(),0);
         
         if(itemNumber==0){
-            barrierRotate.y=-90+barrierRotate.y;
+            barrierRotate.y=barrierRotate.y;
         }
         // 障害がないオブジェクトを削除対象のオブジェクト位置に生成
-        GameObject testObject = Instantiate(Resources.Load("Prefabs/"+itemList[itemNumber]),barrierPosition, Quaternion.Euler(barrierRotate)) as GameObject;
+        GameObject testObject = Instantiate(Resources.Load("Prefabs/"+itemList[itemNumber]),barrierPosition,Quaternion.identity) as GameObject;
+        if(itemNumber==0){
+          testObject.transform.localScale = new Vector3(2,1,2);
+          testObject.transform.rotation = Quaternion.Euler(rotate);
+          if(rotate.y==90){
+              testObject.transform.position = new Vector3(testObject.transform.position.x+5.21f,
+              testObject.transform.position.y,testObject.transform.position.z);
+          }
+        }else if(itemNumber==3){
+            testObject.transform.rotation = Quaternion.Euler(new Vector3(90,0,0));
+            //testObject.transform.rotation = Quaternion.Euler(new Vector3(0,90,0));
+            //testObject.transform.position = new Vector3(-58.37f,0.111f,48.15f);
+        }
     }
 
     /// <summary>
