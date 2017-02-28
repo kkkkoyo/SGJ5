@@ -44,6 +44,10 @@ public class ConversionObstacleController : MonoBehaviour
             Debug.Log(itemList.IndexOf(itemList[itemNumber]));
             Debug.Log(barrierList.IndexOf(itemChecker.destroyName()));
 
+            if(itemNumber==1)
+            {
+                itemChecker.InitPos();
+            }
             return;
         }
         // 対象オブジェクトとポジション取得

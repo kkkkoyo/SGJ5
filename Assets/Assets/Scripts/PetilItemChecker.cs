@@ -20,6 +20,7 @@ public class PetilItemChecker : MonoBehaviour {
 	private Vector3 barrierPosition=new Vector3();
 	[SerializeField] private Text messageText;
 	private Vector3 initPos=Vector3.zero;
+	[SerializeField] private Image[] TitleImage;
 
 	/// <summary>
     /// 取得したアイテム数
@@ -59,7 +60,7 @@ public class PetilItemChecker : MonoBehaviour {
 			// バリアのフラグを変更はしない
 			if(this.ItemTotal>=3){
 			//3つ揃った
-			messageText.GetComponent<Text>().text="宇宙船へ迎え！";
+			messageText.GetComponent<Text>().text="宇宙船へ向かえ！";
 		 }
 			return;
 		}
@@ -148,8 +149,21 @@ public class PetilItemChecker : MonoBehaviour {
 	}
 	public void InitPos(){
 		transform.position = initPos;
+		transform.rotation = Quaternion.identity;
 	}
 	public void Restart(){
-	SceneManager.LoadScene ("game");
+		for (int i = 0; i < 3; i++)
+		{
+			TitleImage[i].enabled = true;
+		}
+	}
+	public void GoTitle(){
+	SceneManager.LoadScene ("Title");
+	}
+	public void CloseImage(){
+		for (int i = 0; i < 3; i++)
+		{
+			TitleImage[i].enabled = false;
+		}
 	}
 }
